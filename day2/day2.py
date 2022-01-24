@@ -1,6 +1,3 @@
-from functools import total_ordering
-
-
 def main():
     instructions = get_input()
     part1(instructions)
