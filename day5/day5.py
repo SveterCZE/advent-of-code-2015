@@ -74,10 +74,9 @@ def two_unique_pair(word):
 
 def gap_between_repetitions(value):
     for i in range(len(value)):
-        for j in range(len(value)):
-            if i != j:
-                if abs(value[i] - value[j]) > 1:
-                    return True
+        for j in range(i+1, len(value)):
+            if abs(value[i] - value[j]) > 1:
+                return True
     return False
 
 
