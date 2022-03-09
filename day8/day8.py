@@ -28,8 +28,7 @@ def part2(instructions):
     lenght_new_string = 0
     for elem in instructions:
         lenght_chars += len(elem)
-        temp_len = len(elem) + calculate_new_string_len(elem[1:-1]) + 4
-        lenght_new_string += temp_len
+        lenght_new_string += len(elem) + calculate_new_string_len(elem[1:-1]) + 4
     print(lenght_new_string - lenght_chars)
     return 0
 
