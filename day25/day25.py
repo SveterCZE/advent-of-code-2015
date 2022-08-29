@@ -11,7 +11,6 @@ def get_instructions():
         return (int(instructions[0]), int(instructions[1]))
 
 def part1(instructions):
-    # instructions = (6,4)
     last_coordinate = (1,1)
     last_coordinate_value = 20151125
     while True:
