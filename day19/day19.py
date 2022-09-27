@@ -1,15 +1,17 @@
 import copy
+import random
 
 def main():
-    instructions, initial_molecule = get_input()
+    instructions, instructions_reversed, initial_molecule = get_input()
     part1(instructions, list(initial_molecule))
-    part2(instructions, initial_molecule)
+    part2(instructions_reversed, initial_molecule)
     return 0
 
     
 def get_input():
     f = open("input.txt", "r")
     instructions = {}
+    reversed_instructions_list = []
     all_formulae_saved = False
     for line in f:
         split_line = line.strip().split(" ")
@@ -17,57 +19,44 @@ def get_input():
             all_formulae_saved = True
             continue
         if all_formulae_saved == False:
+            # First direction of instructions
             if split_line[0] not in instructions:
                 instructions[split_line[0]] = set()
             instructions[split_line[0]].add(split_line[2])
+            # Second direction of instructions
+            reversed_instructions_list.append((split_line[2], split_line[0]))
         else:
             initial_molecule = split_line[0]
-    return instructions, initial_molecule
+    random.shuffle(reversed_instructions_list)
+    return instructions, reversed_instructions_list, initial_molecule
 
 def part1(instructions, initial_molecule):
     modified_molecules = generate_modified_molecules(instructions, initial_molecule)
     print(len(modified_molecules))
     return 0
 
-def part2(instructions, target_molecule):
+def part2(instructions, initial_molecula):
+    target_molecule = "e"
+    while True:
+        step_count = random_molecule_generation(initial_molecula, target_molecule, instructions)
+        if step_count != None:
+            print(step_count)
+            break
     return 0
-#     round = 1
-#     initial_molecule = "e"
-#     current_reviewed_molecules = set()
-#     current_reviewed_molecules.add(initial_molecule)
-#     while True:
-#         new_modified_molecules = set()
-#         for elem in current_reviewed_molecules:
-#             temp_modified_molecules = generate_modified_molecules(instructions, list(elem))
-#             for temp_molecule in temp_modified_molecules:
-#                 new_modified_molecules.add(temp_molecule)
-#         if target_molecule in new_modified_molecules:
-#             print(round)
-#             break
-#         else:
-#             round += 1
-#             clensed_molecules = remove_long_molecules(new_modified_molecules, target_molecule)
-#             # if round > 3:
-#             #     clensed_molecules = remove_molecules_do_not_match(new_modified_molecules, target_molecule)
-#             current_reviewed_molecules = clensed_molecules
-#         print(round)
-#     print("END")
-#     return 0
 
-# def remove_molecules_do_not_match(new_modified_molecules, target_molecule):
-#     valid_molecules = set()
-#     for checked_molecule in new_modified_molecules:
-#         for i in range(len(checked_molecule)):
-#             pass
-
-# def remove_long_molecules(new_modified_molecules, target_molecule):
-#     clensed_molecules = set()
-#     for elem in new_modified_molecules:
-#         if len(elem) > len(target_molecule):
-#             pass
-#         else:
-#             clensed_molecules.add(elem)
-#     return clensed_molecules
+def random_molecule_generation(initial_molecula, target_molecule, instructions):
+    counter = 0
+    while True:
+        for elem in instructions:
+            if elem[0] in initial_molecula:
+                initial_molecula = initial_molecula.replace(elem[0], elem[1], 1)
+                random.shuffle(instructions)
+                break
+        counter += 1
+        if initial_molecula == target_molecule:
+            return counter
+        if counter > 1000:
+            return None
 
 def generate_modified_molecules(instructions, initial_molecule):
     modified_molecules = set()
