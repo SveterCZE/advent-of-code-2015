@@ -47,16 +47,19 @@ def part2(instructions, initial_molecula):
 def random_molecule_generation(initial_molecula, target_molecule, instructions):
     counter = 0
     while True:
+        match_found = False
         for elem in instructions:
             if elem[0] in initial_molecula:
                 initial_molecula = initial_molecula.replace(elem[0], elem[1], 1)
                 random.shuffle(instructions)
+                match_found = True
                 break
+        if match_found == False:
+            return None
         counter += 1
         if initial_molecula == target_molecule:
             return counter
-        if counter > 1000:
-            return None
+
 
 def generate_modified_molecules(instructions, initial_molecule):
     modified_molecules = set()
